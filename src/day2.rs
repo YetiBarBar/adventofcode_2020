@@ -31,6 +31,13 @@ impl FromStr for PasswdRule {
 }
 
 impl PasswdRule {
+    pub fn is_valid(&self, part: usize) -> bool {
+        match part {
+            1 => self.is_valid_part_1(),
+            2 => self.is_valid_part_2(),
+            _ => unreachable!(),
+        }
+    }
     pub fn is_valid_part_1(&self) -> bool {
         let count = self.pass.matches(self.c).count();
         count.le(&self.max) && count.ge(&self.min)
@@ -48,20 +55,21 @@ impl PasswdRule {
 
 #[must_use]
 pub fn part_1(input: &[String]) -> usize {
+    validate_for_part(input, 1)
+}
+
+#[must_use]
+fn validate_for_part(input: &[String], part: usize) -> usize {
     input
         .iter()
         .filter_map(|s| PasswdRule::from_str(s).ok())
-        .filter(PasswdRule::is_valid_part_1)
+        .filter(|rule| rule.is_valid(part))
         .count()
 }
 
 #[must_use]
 pub fn part_2(input: &[String]) -> usize {
-    input
-        .iter()
-        .filter_map(|s| PasswdRule::from_str(s).ok())
-        .filter(PasswdRule::is_valid_part_2)
-        .count()
+    validate_for_part(input, 2)
 }
 
 pub fn main() {
