@@ -6,7 +6,7 @@ pub fn part_1(input: &[String], horiz: usize, vert: usize) -> usize {
     let mut x = 0;
     let mut points = Vec::new();
     while y.lt(&input.len()) {
-        let c = input[y].chars().nth(x % input[0].len()).unwrap();
+        let c = input[y].chars().nth(x % input[0].len()).unwrap_or('Y');
         points.push(c);
         x += horiz;
         y += vert;
