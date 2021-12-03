@@ -46,19 +46,21 @@ impl PasswdRule {
     }
 }
 
+#[must_use]
 pub fn part_1(input: &[String]) -> usize {
     input
         .iter()
-        .map(|s| PasswdRule::from_str(s).unwrap())
-        .filter(|rule| rule.is_valid_part_1())
+        .filter_map(|s| PasswdRule::from_str(s).ok())
+        .filter(PasswdRule::is_valid_part_1)
         .count()
 }
 
+#[must_use]
 pub fn part_2(input: &[String]) -> usize {
     input
         .iter()
-        .map(|s| PasswdRule::from_str(s).unwrap())
-        .filter(|rule| rule.is_valid_part_2())
+        .filter_map(|s| PasswdRule::from_str(s).ok())
+        .filter(PasswdRule::is_valid_part_2)
         .count()
 }
 
