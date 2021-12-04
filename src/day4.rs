@@ -1,11 +1,11 @@
-use std::{path::PathBuf, str::FromStr};
+use std::path::PathBuf;
 
 fn transform_to_items(input: &str) -> Vec<Vec<String>> {
     input
         .split("\n\n")
         .map(|s| {
             s.split_whitespace()
-                .map(|v| v.to_string())
+                .map(std::string::ToString::to_string)
                 .collect::<Vec<_>>()
         })
         .collect()
@@ -28,7 +28,7 @@ impl TryFrom<Vec<String>> for Passport {
 
     fn try_from(value: Vec<String>) -> Result<Self, Self::Error> {
         let mut pass_builder = PassportBuilder::default();
-        value.iter().for_each(|item| {
+        for item in &value {
             let pos = item.find(':').unwrap();
             let value = item[pos + 1..].to_string();
             let id = &item[0..pos].to_string();
@@ -59,42 +59,8 @@ impl TryFrom<Vec<String>> for Passport {
                 }
                 _ => (),
             }
-        });
-        if let Some(passport) = pass_builder.try_build() {
-            Ok(passport)
-        } else {
-            Err(())
         }
-    }
-}
-
-#[derive(Debug)]
-pub enum PassField {
-    Byr,
-    Iyr,
-    Eyr,
-    Hgt,
-    Hcl,
-    Ecl,
-    Pid,
-    Cid,
-}
-
-impl FromStr for PassField {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "byr" => Ok(PassField::Byr),
-            "iyr" => Ok(PassField::Iyr),
-            "eyr" => Ok(PassField::Eyr),
-            "hgt" => Ok(PassField::Hgt),
-            "hcl" => Ok(PassField::Hcl),
-            "ecl" => Ok(PassField::Ecl),
-            "pid" => Ok(PassField::Pid),
-            "cid" => Ok(PassField::Cid),
-            _ => Err(()),
-        }
+        pass_builder.try_build().ok_or(())
     }
 }
 
@@ -106,7 +72,6 @@ struct Passport {
     hcl: String,
     ecl: String,
     pid: String,
-    cid: Option<String>,
 }
 
 #[derive(Default, Debug, Clone)]
@@ -171,7 +136,7 @@ impl Passport {
         let charset = ('0'..='9').chain('a'..='f').collect::<Vec<_>>();
 
         self.hcl.len() == 7
-            && self.hcl.chars().next() == Some('#')
+            && self.hcl.starts_with('#')
             && self.hcl.chars().skip(1).all(|c| charset.contains(&c))
     }
 
@@ -206,7 +171,6 @@ impl PassportBuilder {
         let hcl = self.hcl?;
         let ecl = self.ecl?;
         let pid = self.pid?;
-        let cid = self.cid;
 
         Some(Passport {
             byr,
@@ -216,23 +180,24 @@ impl PassportBuilder {
             hcl,
             ecl,
             pid,
-            cid,
         })
     }
 }
 
-pub fn part_1(input: &Vec<Vec<String>>) -> usize {
+#[must_use]
+pub fn part_1(input: &[Vec<String>]) -> usize {
     input
         .iter()
-        .filter(|&v| Passport::try_from(v.to_owned()).is_ok())
+        .filter(|&v| Passport::try_from(v.clone()).is_ok())
         .count()
 }
 
-pub fn part_2(input: &Vec<Vec<String>>) -> usize {
+#[must_use]
+pub fn part_2(input: &[Vec<String>]) -> usize {
     input
         .iter()
-        .filter_map(|v| Passport::try_from(v.to_owned()).ok())
-        .filter(|p| p.validate())
+        .filter_map(|v| Passport::try_from(v.clone()).ok())
+        .filter(Passport::validate)
         .count()
 }
 
