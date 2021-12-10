@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use adventofcode_2020::utils::read_lines;
+use adventofcode_tooling::read_lines_to_vec_t;
 
 #[derive(Debug)]
 struct PasswdRule {
@@ -73,10 +73,7 @@ pub fn part_2(input: &[String]) -> usize {
 }
 
 pub fn main() {
-    let values: Vec<_> = read_lines("day_2020_2.data")
-        .unwrap()
-        .map(Result::unwrap)
-        .collect();
+    let values: Vec<_> = read_lines_to_vec_t("day_2020_2.data");
 
     println!("Part 1: {:?}", part_1(&values));
     println!("Part 2: {:?}", part_2(&values));

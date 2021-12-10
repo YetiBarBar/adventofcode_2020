@@ -1,12 +1,7 @@
-use adventofcode_2020::utils::read_lines;
+use adventofcode_tooling::read_lines_to_vec_t;
 
 pub fn main() {
-    let values: Vec<usize> = read_lines("day_2020_1.data")
-        .unwrap()
-        .map(Result::unwrap)
-        .map(|l| l.trim().parse::<usize>())
-        .map(Result::unwrap)
-        .collect();
+    let values: Vec<usize> = read_lines_to_vec_t("day_2020_1.data");
 
     println!("Part 1: {:?}", process(&values, 2, 2020));
     println!("Part 2: {:?}", process(&values, 3, 2020));

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use adventofcode_2020::utils::read_lines;
+use adventofcode_tooling::read_lines_to_vec_t;
 
 #[must_use]
 pub fn part_1(data: &[String]) -> usize {
@@ -40,8 +40,8 @@ pub fn decode(in_data: &str, pows: &[usize], symbol: char) -> usize {
 pub fn part_2(data: &[String]) -> usize {
     let seats: HashSet<_> = data.iter().map(|seat| decode_part_1(seat)).collect();
 
-    println!("{}", seats.len());
     let mut candidates = vec![];
+
     // We are not in the first row, niether the last
     // So our Id is between 9 to (127 * 8 + 1)
     for idx in 9..(127 * 8) {
@@ -54,10 +54,7 @@ pub fn part_2(data: &[String]) -> usize {
 }
 
 pub fn main() {
-    let values: Vec<_> = read_lines("day_2020_5.data")
-        .unwrap()
-        .map(Result::unwrap)
-        .collect();
+    let values: Vec<_> = read_lines_to_vec_t("day_2020_5.data");
 
     println!("Part 1: {:?}", part_1(&values));
     println!("Part 2: {:?}", part_2(&values));

@@ -30,3 +30,4 @@ path = "src/day6.rs"
 
 [dependencies]
 itertools = "0.10.1"
+adventofcode-tooling = { path = "../adventofcode-tooling/" }
