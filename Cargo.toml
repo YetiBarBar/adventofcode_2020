@@ -28,6 +28,10 @@ path = "src/day5.rs"
 name = "day6"
 path = "src/day6.rs"
 
+[[bin]]
+name = "day25"
+path = "src/day25.rs"
+
 [dependencies]
 itertools = "0.10.1"
 adventofcode-tooling = { path = "../adventofcode-tooling/" }
