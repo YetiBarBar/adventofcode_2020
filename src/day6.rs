@@ -41,10 +41,7 @@ pub fn main() {
     filepath.push("day_2020_6.data");
     let input_data = std::fs::read_to_string(filepath).unwrap();
 
-    let groups: Vec<String> = input_data
-        .split("\n\n")
-        .map(|s| str::to_string(s))
-        .collect();
+    let groups: Vec<String> = input_data.split("\n\n").map(str::to_string).collect();
 
     println!("Part 1: {:?}", part_1(&groups));
     println!("Part 2: {:?}", part_2(&groups));
