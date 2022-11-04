@@ -41,5 +41,5 @@ name = "day25"
 path = "src/day25.rs"
 
 [dependencies]
-itertools = "0.10.1"
+itertools = "0.10"
 adventofcode-tooling = { path = "../adventofcode-tooling/" }
